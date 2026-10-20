@@ -1,0 +1,13 @@
+# Core (local demo + tests) — intentionally light, everything runs offline.
+numpy>=1.26
+pandas>=2.0
+pytest>=8.0
+
+# Optional production extras (uncomment what your environment needs):
+# snowflake-connector-python>=3.0   # Snowflake warehouse target
+# pyspark>=3.5                      # spark/transform_job.py on a cluster
+# dbt-core>=1.7                     # dbt_project/
+# dbt-snowflake>=1.7                # dbt_project/ Snowflake adapter
+# apache-airflow>=2.9               # dags/elt_pipeline_dag.py
+# kafka-python>=2.0                 # streaming/ against a real Kafka broker
+# openai>=1.0                       # vector/rag.py LLM generation (else extractive)

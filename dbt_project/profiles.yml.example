@@ -1,0 +1,26 @@
+# Copy to ~/.dbt/profiles.yml (or set DBT_PROFILES_DIR) and fill in credentials.
+# Production target is Snowflake; a DuckDB/SQLite local profile can be added
+# for offline development against the same models.
+ai_automation_platform:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: TRANSFORMER
+      database: INTEGRATION_DB
+      warehouse: COMPUTE_WH
+      schema: ANALYTICS
+      threads: 4
+    prod:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: TRANSFORMER
+      database: INTEGRATION_DB
+      warehouse: COMPUTE_WH
+      schema: ANALYTICS
+      threads: 8

@@ -1,0 +1,72 @@
+version: 2
+
+sources:
+  - name: warehouse_raw
+    description: "Raw execution logs landed from the integration platform (S3 -> warehouse loader)."
+    tables:
+      - name: raw_execution_logs
+        description: "One row per integration execution, keyed by execution_id."
+        columns:
+          - name: execution_id
+            tests:
+              - unique
+              - not_null
+          - name: status
+            tests:
+              - accepted_values:
+                  values: ["SUCCESS", "FAILED", "WARNING"]
+          - name: records_processed
+            tests:
+              - not_null
+
+models:
+  - name: stg_execution_logs
+    description: "Cleaned, typed execution logs (PROD only)."
+    columns:
+      - name: execution_id
+        tests:
+          - unique
+          - not_null
+      - name: partner_id
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ["SUCCESS", "FAILED", "WARNING"]
+      - name: direction
+        tests:
+          - accepted_values:
+              values: ["INBOUND", "OUTBOUND"]
+      - name: records_processed
+        tests:
+          - not_null
+      - name: records_succeeded
+        description: "records_processed - records_failed; must never be negative."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+        # If dbt_utils is not installed, replace the test above with a
+        # singular test under tests/ asserting records_succeeded >= 0.
+
+  - name: mart_execution_summary
+    description: "Daily per-partner/process execution rollup."
+    columns:
+      - name: executions
+        tests:
+          - not_null
+      - name: success_rate
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0 and <= 1"
+
+  - name: mart_partner_health
+    description: "Partner-level health rollup."
+    columns:
+      - name: partner_id
+        tests:
+          - unique
+          - not_null
+      - name: success_rate
+        tests:
+          - not_null

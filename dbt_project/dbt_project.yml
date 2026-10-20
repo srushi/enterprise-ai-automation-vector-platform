@@ -1,0 +1,21 @@
+name: "ai_automation_platform"
+version: "1.0.0"
+config-version: 2
+
+profile: "ai_automation_platform"
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  ai_automation_platform:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

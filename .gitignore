@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Runtime data (only the small committed sample is tracked)
+data/*
+!data/sample/
+!data/sample/**
+*.db
+*.sqlite3
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+profiles.yml
+
+# Airflow
+airflow/
+logs/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
